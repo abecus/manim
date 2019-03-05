@@ -44,17 +44,17 @@ def tex_to_dvi(tex_file):
             "latex",
             "-interaction=batchmode",
             "-halt-on-error",
-            "-output-directory=" + TEX_DIR,
-            tex_file,
+            '-output-directory="' + TEX_DIR + '"',
+            '"' + tex_file + '"',
             ">",
             os.devnull
-        ] if not TEX_USE_CTEX else [
+        ] if (not TEX_USE_CTEX) else [
             "xelatex",
             "-no-pdf",
             "-interaction=batchmode",
             "-halt-on-error",
-            "-output-directory=" + TEX_DIR,
-            tex_file,
+            '-output-directory="' + TEX_DIR + '"',
+            '"' + tex_file + '"',
             ">",
             os.devnull
         ]
@@ -62,8 +62,7 @@ def tex_to_dvi(tex_file):
         if exit_code != 0:
             log_file = tex_file.replace(".tex", ".log")
             raise Exception(
-                ("Latex error converting to dvi. " if not TEX_USE_CTEX
-                else "Xelatex error converting to xdv. ") +
+                ("Latex error converting to dvi. " if (not TEX_USE_CTEX) else "Xelatex error converting to xdv. ") +
                 "See log output above or the log file: %s" % log_file)
     return result
 
@@ -79,12 +78,12 @@ def dvi_to_svg(dvi_file, regen_if_exists=False):
     if not os.path.exists(result):
         commands = [
             "dvisvgm",
-            dvi_file,
+            '"' + dvi_file + '"',
             "-n",
             "-v",
             "0",
             "-o",
-            result,
+            '"' + result + '"',
             ">",
             os.devnull
         ]
